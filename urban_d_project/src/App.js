@@ -1,13 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
+import mapi from './utils/mapi';
 import './App.css';
 
 function App() {
-
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={()=>{console.log(window.govmap);}}></button>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.

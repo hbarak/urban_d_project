@@ -11,7 +11,7 @@ function Map({ layersImage, setBounds}) {
         },
         zoom: 11
     });
-    const onMapChange = ({center, zoom , bounds, marginBounds} ) => {
+    const onMapChange = ({center, zoom , bounds} ) => {
     setScreen({
       center: {
         lat: center.lat,
@@ -32,7 +32,7 @@ function Map({ layersImage, setBounds}) {
         }}
         defaultZoom={screen.zoom}
         onChange={onMapChange}
-        options={()=>({
+        options={() => ({
             fullscreenControl: false    
         })}
         onZoomAnimationStart={()=> setLoading(true)}

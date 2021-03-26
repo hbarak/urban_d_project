@@ -1,15 +1,7 @@
 export const types = {
-    SET_MARKERS: "SET_MARKERS",
     SET_LAYERS: "SET_LAYERS",
     GET_LAYERS_IMAGE: "GET_LAYERS_IMAGE",
     CHECK_LAYER_BY_ID: "CHECK_LAYER_BY_ID",
-}
-
-export const setMarkers = (markers) => {
-    return {
-        type: types.SET_MARKERS,
-        payload: markers
-    }
 }
 
 export const setLayers = (layers) => {

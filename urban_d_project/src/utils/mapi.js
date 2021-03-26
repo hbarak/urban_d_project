@@ -2,33 +2,6 @@ import axios from 'axios';
 import qs from 'qs';
 import constants from './constants'
 
-const govmap = window.govmap;
-
-export const getDataByLayer = async (layerName, x, y, r) => {
-    const response = await govmap.getLayerData({
-        LayerName: layerName,
-        Point: {x, y},
-        Radius: r,
-    }); 
-    const {errorCode, status, data = []} = response;
-    if(data){
-        const ret = data.reduce((prev, { Fields, distance }) => {
-            const marker = Fields.reduce((p, { FieldName, Value })=>{
-                p[FieldName] = Value;
-                return p;
-            }, {})
-            prev.push({
-                layerName,
-                marker,
-                distance
-            })
-            return prev;
-        }, []);
-        return ret;
-    }
-    return [];
-}
-
 export const getMapiLayers = async () => {
     const response = await axios.post(constants.govmapLayersUrl ,{
         layers: null,

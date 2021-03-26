@@ -1,38 +1,41 @@
 import React from 'react';
-import GoogleMapReact from 'google-map-react';
 import { connect } from "react-redux";
-import { setLayers, getLayersImage } from './redux/actions'
+import { setLayers, getLayersImage, checkLayerById } from './redux/actions'
 import { getMapiLayers, getLayersMapiImage, createMapiLayerObject } from './utils/mapi';
 import converter from './utils/converter';
-import constants from './utils/constants';
 import LayersMenu from './components/LayersMenu';
 import Map from './components/Map'
 import './App.css';
 
-function App({layers, layersImage, getAllLayers, getLayersImage}) {
-
+function App({layers, layersImage, getAllLayers, getLayersImage, checkLayerById}) {
+  const [bounds, setBounds] = React.useState();
+  
   React.useEffect(() => {
     getAllLayers();
   }, []);
 
-  const loadImage = (bounds) => {
+  React.useEffect(()=>{
     if(layers.length > 0 && bounds){
       const {ne, nw, se, sw} = bounds;
       const topLeftPoint = converter.latLngToPoint(nw.lat, nw.lng);
       const bottomRightPoint = converter.latLngToPoint(se.lat, se.lng);
-      getLayersImage(layers, topLeftPoint[0], bottomRightPoint[1], bottomRightPoint[0],topLeftPoint[1],window.innerWidth * 0.7,window.innerHeight);
+      getLayersImage(layers.filter(l => l.checked), topLeftPoint[0], bottomRightPoint[1], bottomRightPoint[0],topLeftPoint[1],window.innerWidth * 0.7,window.innerHeight);
     }
-  }
+  },[layers, bounds])
 
   return (
     <div className="App" style={{display:'flex'}}>
       <div style={{ height: '100vh', width: '70%' }}>
         {layers.length > 0 && <Map
-        loadImage={loadImage}
+        setBounds={setBounds}
         layersImage={layersImage}
         />}
       </div>
       <div style={{ height: '100vh', width: '30%' }}>
+          <LayersMenu
+          layers={layers}
+          checkLayer={checkLayerById}
+          />
       </div>
     </div>
   );
@@ -60,7 +63,7 @@ const mapDispatchToProps = dispatch => {
     },
     getLayersImage: (layers, xmin, ymin, xmax, ymax, imageWidth, imageHeight) => {
       getLayersMapiImage({
-        layers: layers.filter(l => l.checked).map(l => createMapiLayerObject(l.layerID, l.caption, l.minScale, l.maxScale)),
+        layers: layers.map(l => createMapiLayerObject(l.layerID, l.caption, l.minScale, l.maxScale)),
         box :{ xmin, ymin, xmax, ymax },
         size: { width: imageWidth, height: imageHeight },
       })
@@ -71,6 +74,9 @@ const mapDispatchToProps = dispatch => {
       .then((image) => {
         dispatch(getLayersImage(image));
       })
+    },
+    checkLayerById: (layerId) => {
+      dispatch(checkLayerById(layerId));
     },
   };
 }

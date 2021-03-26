@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from "react-redux";
 
 const MenuItem = ({layer, check}) => {
     return (
-    <div style={{ backgroundColor: layer.checked ? 'lightblue' :'white', margin: '5px 20px' }}
+    <div style={{ backgroundColor: layer.checked ? 'lightblue' :'white', margin: '5px 20px', cursor: 'pointer', border: '1px solid', 'border-radius': '5px' }}
     onClick={() => check(layer.layerID)}
     >{layer.caption}</div>
     );

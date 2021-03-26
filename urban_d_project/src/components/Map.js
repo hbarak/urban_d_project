@@ -40,6 +40,7 @@ function Map({ layersImage, setBounds}) {
         >
             {layersImage && !loading &&
             <img src={layersImage} 
+            alt=''
             style={{
                 position: 'absolute',
                 transform: 'translate(-50%, -50%)'
